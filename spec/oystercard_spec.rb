@@ -20,5 +20,12 @@ it { is_expected.to respond_to(:deduct).with(1).argument }
       amount = subject.MAX_CAPACITY
       expect{ subject.top_up(amount) }.to raise_error "Balance full: cannot add #{amount}!"
     end
+
+  describe '#deduct' do
+    it 'deducts amount from balance' do
+      amount = 10
+      expect(subject.deduct(amount)).to eq subject.balance
+    end
+  end
   end
 end
