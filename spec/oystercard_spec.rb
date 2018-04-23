@@ -2,7 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
 
-it { is_expected.to respond_to(:deduct).with(1).argument }
+  it { is_expected.to respond_to(:deduct).with(1).argument }
 
   describe '#balance' do
     it 'oystercard has default balance of zero' do
@@ -20,6 +20,7 @@ it { is_expected.to respond_to(:deduct).with(1).argument }
       amount = subject.MAX_CAPACITY
       expect{ subject.top_up(amount) }.to raise_error "Balance full: cannot add #{amount}!"
     end
+  end
 
   describe '#deduct' do
     it 'deducts amount from balance' do
@@ -27,5 +28,23 @@ it { is_expected.to respond_to(:deduct).with(1).argument }
       expect(subject.deduct(amount)).to eq subject.balance
     end
   end
+
+  describe '#in_journey' do
+    it 'responds as true when touch in is true' do
+      subject.touch_in
+      expect(subject.in_journey?).to eq true
+    end
+  end
+
+  describe '#touch_in' do
+    it 'returns true when touch in' do
+      expect(subject.touch_in).to eq true
+    end
+  end
+
+  describe '#touch_out' do
+    it 'in_journey returns false when touch out' do
+      expect(subject.touch_out).to eq false
+    end
   end
 end
