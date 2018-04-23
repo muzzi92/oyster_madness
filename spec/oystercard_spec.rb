@@ -2,6 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
 
+it { is_expected.to respond_to(:deduct).with(1).argument }
+
   describe '#balance' do
     it 'oystercard has default balance of zero' do
     expect(subject.balance).to eq 0
