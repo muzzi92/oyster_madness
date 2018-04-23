@@ -1,9 +1,10 @@
 class Oystercard
-  attr_reader :balance, :MAX_CAPACITY, :journey
+  attr_reader :balance, :MAX_CAPACITY, :journey, :MIN_BALANCE
 
   def initialize
     @balance = 0
     @MAX_CAPACITY = 90
+    @MIN_BALANCE = 1
   end
 
   def top_up(amount)
@@ -20,6 +21,7 @@ class Oystercard
   end
 
   def touch_in
+    fail "Balance not enough!" if @balance < @MIN_BALANCE
     @journey = true
   end
 

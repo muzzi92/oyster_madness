@@ -37,8 +37,9 @@ describe Oystercard do
   end
 
   describe '#touch_in' do
-    it 'returns true when touch in' do
-      expect(subject.touch_in).to eq true
+    it 'raises error if balance is 0' do
+      balance = 0
+      expect { subject.touch_in }.to raise_error "Balance not enough!"
     end
   end
 
