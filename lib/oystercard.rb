@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance, :MAX
+  attr_reader :balance, :MAX_CAPACITY
 
   def initialize
     @balance = 0

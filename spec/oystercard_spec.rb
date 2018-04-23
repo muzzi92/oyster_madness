@@ -16,9 +16,7 @@ describe Oystercard do
 
     it 'fails when balance of 90 is exceeded' do
       amount = subject.MAX_CAPACITY
-      puts amount
-      subject.top_up(amount)
-      expect{ subject.top_up 1 }.to raise_error "Balance full: cannot add!"
+      expect{ subject.top_up(amount) }.to raise_error "Balance full: cannot add #{amount}!"
     end
   end
 end
