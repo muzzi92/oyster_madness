@@ -8,7 +8,7 @@ class Oystercard
 
   def top_up(amount)
     fail "Balance full: cannot add #{amount}!" if (@balance + amount) >= @MAX_CAPACITY
-     @balance = @balance + amount
+     @balance += amount
   end
 
 end
