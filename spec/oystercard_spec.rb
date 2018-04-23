@@ -17,7 +17,7 @@ describe Oystercard do
     end
 
     it 'fails when balance of 90 is exceeded' do
-      amount = subject.MAX_CAPACITY
+      amount = described_class::MAX_CAPACITY
       expect{ subject.top_up(amount) }.to raise_error "Balance full: cannot add #{amount}!"
     end
   end
@@ -31,14 +31,14 @@ describe Oystercard do
 
   describe '#in_journey' do
     it 'responds as true when touch in is true' do
+      subject.top_up(5)
       subject.touch_in
       expect(subject.in_journey?).to eq true
     end
   end
 
   describe '#touch_in' do
-    it 'raises error if balance is 0' do
-      balance = 0
+    it 'will not touch in if below minimum balance' do
       expect { subject.touch_in }.to raise_error "Balance not enough!"
     end
   end
