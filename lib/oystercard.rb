@@ -20,11 +20,11 @@ class Oystercard
 
   def touch_in(station)
     touch_in_card_checks
-    @entry_station = station.name
+    @entry_station = station
   end
 
   def touch_out(station)
-    @exit_station = station.name
+    @exit_station = station
     deduct(JOURNEY_COST)
     add_to_journey_list
     @entry_station = nil
@@ -37,7 +37,7 @@ class Oystercard
   end
 
   def add_to_journey_list
-    @journey_list << {:start=>@entry_station, :end=>@exit_station}
+    @journey_list << { start: @entry_station.name, zone_start: @entry_station.zone, end: @exit_station.name, zone_end: @exit_station.zone }
   end
 
   def touch_in_card_checks
