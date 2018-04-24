@@ -3,6 +3,7 @@ require 'oystercard'
 describe Oystercard do
 
   let(:station) { double :station, name: :Bank}
+  let(:station2) { double :station, name: :London_Bridge}
 
   describe '#balance' do
     it 'oystercard has default balance of zero' do
@@ -35,20 +36,29 @@ describe Oystercard do
       expect { subject.touch_in(station) }.to raise_error "Balance not enough!"
     end
 
-    it { is_expected.to respond_to(:touch_in).with(1).argument }
+    # it { is_expected.to respond_to(:touch_out).with(1).argument }
   end
 
   describe '#touch_out' do
     it 'in_journey returns false when touch out' do
       subject.top_up(10)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(station)
       expect(subject.in_journey?).to eq false
     end
 
     it 'expects balance to be deducted on touch out' do
       subject.top_up(10)
-      expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::JOURNEY_COST)
+      expect { subject.touch_out(station) }.to change { subject.balance }.by(-Oystercard::JOURNEY_COST)
+    end
+  end
+
+  describe '#exit_station' do
+    it 'remember the exit station on touch out' do
+      subject.top_up(10)
+      subject.touch_in(station)
+      subject.touch_out(station2)
+      expect(subject.exit_station).to eq :London_Bridge
     end
   end
 
@@ -62,8 +72,27 @@ describe Oystercard do
     it 'resets entry station to nil on touch out' do
       subject.top_up(10)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(station2)
       expect(subject.entry_station).to be_nil
     end
   end
+
+  describe '#journey_list' do
+    it 'checks if it returns an empty array' do
+      expect(subject.journey_list).to eq []
+    end
+    it 'checks if journey_list contains one journey' do
+      subject.top_up(10)
+      subject.touch_in(station)
+      subject.touch_out(station2)
+      expect(subject.journey_list.size).to eq 1
+    end
+    it 'checks if journey_list contains a hash' do
+      subject.top_up(10)
+      subject.touch_in(station)
+      subject.touch_out(station2)
+      expect(subject.journey_list[0]).to eq ({start: :Bank, end: :London_Bridge})
+    end
+  end
+
 end
