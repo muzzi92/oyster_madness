@@ -4,7 +4,7 @@ describe Oystercard do
 
   let(:station) { double :station, name: :Bank, zone: 1 }
   let(:station2) { double :station, name: :London_Bridge, zone: 2}
-  let(:journey) {double :journey, entry_station: :Bank }
+  let(:journey) {double :journey, entry_station: :Bank, exit_station: :London_Bridge }
 
   describe '#balance' do
     it 'oystercard has default balance of zero' do
@@ -51,7 +51,7 @@ describe Oystercard do
     it 'expects balance to be deducted on touch out' do
       subject.top_up(10)
       subject.touch_in(journey)
-      expect { subject.touch_out(station) }.to change { subject.balance }.by(-Oystercard::JOURNEY_COST)
+      expect { subject.touch_out(journey) }.to change { subject.balance }.by(-Oystercard::JOURNEY_COST)
     end
   end
 
@@ -59,8 +59,8 @@ describe Oystercard do
     it 'remember the exit station on touch out' do
       subject.top_up(10)
       subject.touch_in(journey)
-      subject.touch_out(station2)
-      expect(subject.exit_station.name).to eq :London_Bridge
+      subject.touch_out(journey)
+      expect(subject.exit_station).to eq :London_Bridge
     end
   end
 
@@ -75,7 +75,7 @@ describe Oystercard do
       subject.top_up(10)
       subject.touch_in(journey)
       subject.entry_station
-      subject.touch_out(station2)
+      subject.touch_out(journey)
       expect(subject.entry_station).to be_nil
     end
   end

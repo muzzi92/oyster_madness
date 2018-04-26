@@ -1,8 +1,8 @@
 require 'journey'
 
 describe Journey do
-  let(:oystercard) {double :oystercard, entry_station: :Bank, zone_start: 1, exit_station: :London_Bridge, zone_end: 2 }
   let(:station) { double :station, name: :Bank }
+  let(:station2) { double :station, name: :London_Bridge }
 
   describe '#journey_list' do
     it 'checks if it returns an empty array' do
@@ -27,12 +27,20 @@ describe Journey do
     end
   end
 
+  describe '#touch_out' do
+    it 'saves the station where touched out' do
+      expect(subject.touch_out(station2)).to eq :London_Bridge
+    end
+  end
+
 
   describe '#add_to_journey_list' do
     it 'expect journey list to eq hash' do
       subject.touch_in(station)
       entry_station = station.name
-      expect(subject.add_to_journey_list(oystercard)).to eq [{start: :Bank, end: :London_Bridge}]
+      subject.touch_out(station2)
+      exit_station = station2.name
+      expect(subject.add_to_journey_list).to eq [{start: :Bank, end: :London_Bridge}]
     end
   end
 

@@ -19,8 +19,8 @@ class Oystercard
     @entry_station = journey.entry_station
   end
 
-  def touch_out(station)
-    @exit_station = station
+  def touch_out(journey)
+    @exit_station = journey.exit_station
     deduct(JOURNEY_COST)
     @entry_station = nil
   end
