@@ -40,43 +40,45 @@ describe Oystercard do
     # it { is_expected.to respond_to(:touch_out).with(1).argument }
   end
 
-  describe '#touch_out' do
-    # it 'in_journey returns false when touch out' do
-    #   subject.top_up(10)
-    #   subject.touch_in(station)
-    #   subject.touch_out(station)
-    #   expect(subject.in_journey?).to eq false
-    # end
+  context 'tops up and touches in' do
 
-    it 'expects balance to be deducted on touch out' do
+    before do
       subject.top_up(10)
       subject.touch_in(journey)
-      expect { subject.touch_out(journey) }.to change { subject.balance }.by(-Oystercard::JOURNEY_COST)
-    end
-  end
-
-  describe '#exit_station' do
-    it 'remember the exit station on touch out' do
-      subject.top_up(10)
-      subject.touch_in(journey)
-      subject.touch_out(journey)
-      expect(subject.exit_station).to eq :London_Bridge
-    end
-  end
-
-  describe '#entry_station' do
-    it 'remembers the entry station on touch in' do
-      subject.top_up(10)
-      subject.touch_in(journey)
-      expect(subject.entry_station).to eq :Bank
     end
 
-    it 'resets entry station to nil on touch out' do
-      subject.top_up(10)
-      subject.touch_in(journey)
-      subject.entry_station
-      subject.touch_out(journey)
-      expect(subject.entry_station).to be_nil
+    describe '#touch_out' do
+      # it 'in_journey returns false when touch out' do
+      #   subject.top_up(10)
+      #   subject.touch_in(station)
+      #   subject.touch_out(station)
+      #   expect(subject.in_journey?).to eq false
+      # end
+
+      it 'expects balance to be deducted on touch out' do
+        expect { subject.touch_out(journey) }.to change { subject.balance }.by(-Oystercard::JOURNEY_COST)
+      end
+    end
+
+    describe '#exit_station' do
+
+      it 'remember the exit station on touch out' do
+        subject.touch_out(journey)
+        expect(subject.exit_station).to eq :London_Bridge
+      end
+    end
+
+    describe '#entry_station' do
+
+      it 'remembers the entry station on touch in' do
+        expect(subject.entry_station).to eq :Bank
+      end
+
+      it 'resets entry station to nil on touch out' do
+        subject.entry_station
+        subject.touch_out(journey)
+        expect(subject.entry_station).to be_nil
+      end
     end
   end
 

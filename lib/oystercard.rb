@@ -13,7 +13,6 @@ class Oystercard
      @balance += amount
   end
 
-
   def touch_in(journey)
     touch_in_card_checks
     @entry_station = journey.entry_station

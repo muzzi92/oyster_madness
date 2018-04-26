@@ -44,4 +44,23 @@ describe Journey do
     end
   end
 
+  describe '#fare' do
+    it 'calculates journey fare if touch in and out' do
+      subject.touch_in(station)
+      subject.touch_out(station2)
+      expect(subject.fare).to eq(Journey::JOURNEY_COST)
+    end
+
+    it 'charges a penalty if have not touched in' do
+      subject.touch_out(station)
+      expect(subject.fare).to eq(Journey::PENALTY_COST)
+    end
+
+    it 'charges a penalty if have not touched out' do
+      subject.touch_in(station)
+      expect(subject.fare).to eq(Journey::PENALTY_COST)
+    end
+
+  end
+
 end
