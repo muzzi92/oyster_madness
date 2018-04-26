@@ -4,7 +4,7 @@ describe Oystercard do
 
   let(:station) { double :station, name: :Bank, zone: 1 }
   let(:station2) { double :station, name: :London_Bridge, zone: 2}
-  let(:journey) {double :journey, entry_station: :Bank, exit_station: :London_Bridge, fare: 1 }
+  let(:journey) {double :journey, entry_station: :Bank, exit_station: :London_Bridge, fare: 1, add_to_journey_list: { start: :Bank, end: :London_Bridge}}
 
   describe '#balance' do
     it 'oystercard has default balance of zero' do
@@ -74,11 +74,9 @@ describe Oystercard do
   describe '#add_to_journey_list' do
     it 'expect journey list to eq hash' do
       subject.top_up(10)
-      subject.touch_in(station)
-      entry_station = station.name
-      subject.touch_out(station2)
-      exit_station = station2.name
-      expect(subject.add_to_journey_list).to eq [{start: :Bank, end: :London_Bridge}]
+      subject.touch_in(journey)
+      subject.touch_out(journey)
+      expect(subject.journey_list).to eq [{start: :Bank, end: :London_Bridge}]
     end
   end
   # describe '#journey_list' do

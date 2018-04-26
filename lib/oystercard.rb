@@ -21,6 +21,7 @@ class Oystercard
   def touch_out(journey)
     @exit_station = journey.exit_station
     deduct(journey.fare)
+    @journey_list << journey.add_to_journey_list
     @entry_station = nil
   end
 
@@ -28,10 +29,6 @@ class Oystercard
 
   def deduct(amount)
     @balance -= amount
-  end
-
-  def add_to_journey_list
-    @journey_list << { start: @entry_station, end: @exit_station }
   end
 
   def touch_in_card_checks
