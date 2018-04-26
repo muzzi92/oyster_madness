@@ -4,11 +4,7 @@ describe Journey do
   let(:station) { double :station, name: :Bank }
   let(:station2) { double :station, name: :London_Bridge }
 
-  describe '#journey_list' do
-    it 'checks if it returns an empty array' do
-      expect(subject.journey_list).to eq []
-    end
-  end
+
 
   describe '#in_journey' do
     it 'responds as true when touch in is true' do
@@ -34,15 +30,7 @@ describe Journey do
   end
 
 
-  describe '#add_to_journey_list' do
-    it 'expect journey list to eq hash' do
-      subject.touch_in(station)
-      entry_station = station.name
-      subject.touch_out(station2)
-      exit_station = station2.name
-      expect(subject.add_to_journey_list).to eq [{start: :Bank, end: :London_Bridge}]
-    end
-  end
+
 
   describe '#fare' do
     it 'calculates journey fare if touch in and out' do

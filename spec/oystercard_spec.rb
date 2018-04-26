@@ -4,7 +4,7 @@ describe Oystercard do
 
   let(:station) { double :station, name: :Bank, zone: 1 }
   let(:station2) { double :station, name: :London_Bridge, zone: 2}
-  let(:journey) {double :journey, entry_station: :Bank, exit_station: :London_Bridge }
+  let(:journey) {double :journey, entry_station: :Bank, exit_station: :London_Bridge, fare: 1 }
 
   describe '#balance' do
     it 'oystercard has default balance of zero' do
@@ -24,20 +24,10 @@ describe Oystercard do
     end
   end
 
-  # describe '#in_journey' do
-  #   it 'responds as true when touch in is true' do
-  #     subject.top_up(5)
-  #     subject.touch_in(station)
-  #     expect(subject.in_journey?).to eq true
-  #   end
-  # end
-
   describe '#touch_in' do
     it 'will not touch in if below minimum balance' do
       expect { subject.touch_in(journey.entry_station) }.to raise_error "Balance not enough!"
     end
-
-    # it { is_expected.to respond_to(:touch_out).with(1).argument }
   end
 
   context 'tops up and touches in' do
@@ -48,15 +38,8 @@ describe Oystercard do
     end
 
     describe '#touch_out' do
-      # it 'in_journey returns false when touch out' do
-      #   subject.top_up(10)
-      #   subject.touch_in(station)
-      #   subject.touch_out(station)
-      #   expect(subject.in_journey?).to eq false
-      # end
-
       it 'expects balance to be deducted on touch out' do
-        expect { subject.touch_out(journey) }.to change { subject.balance }.by(-Oystercard::JOURNEY_COST)
+        expect { subject.touch_out(journey) }.to change { subject.balance }.by(-Journey::JOURNEY_COST)
       end
     end
 
@@ -80,8 +63,24 @@ describe Oystercard do
         expect(subject.entry_station).to be_nil
       end
     end
+  end # < --- context block
+
+  describe '#journey_list' do
+    it 'checks if it returns an empty array' do
+      expect(subject.journey_list).to eq []
+    end
   end
 
+  describe '#add_to_journey_list' do
+    it 'expect journey list to eq hash' do
+      subject.top_up(10)
+      subject.touch_in(station)
+      entry_station = station.name
+      subject.touch_out(station2)
+      exit_station = station2.name
+      expect(subject.add_to_journey_list).to eq [{start: :Bank, end: :London_Bridge}]
+    end
+  end
   # describe '#journey_list' do
   #   it 'checks if it returns an empty array' do
   #     expect(subject.journey_list).to eq []
@@ -98,6 +97,23 @@ describe Oystercard do
   #     subject.touch_out(station2)
   #     expect(subject.journey_list).to eq [{:start=>:Bank, :zone_start=>1, :end=>:London_Bridge, :zone_end=>2}]
   #   end
-  # end
+  # end\
+
+
+    # describe '#in_journey' do
+    #   it 'responds as true when touch in is true' do
+    #     subject.top_up(5)
+    #     subject.touch_in(station)
+    #     expect(subject.in_journey?).to eq true
+    #   end
+    # end
+    # describe '#touch_out' do
+      # it 'in_journey returns false when touch out' do
+      #   subject.top_up(10)
+      #   subject.touch_in(station)
+      #   subject.touch_out(station)
+      #   expect(subject.in_journey?).to eq false
+      # end
+
 
 end
