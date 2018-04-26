@@ -8,6 +8,3 @@ card = Oystercard.new
 card.top_up(10)
 bank = Station.new(:Bank, 1)
 bridge = Station.new(:London_Bridge, 2)
-card.touch_in(bank)
-card.touch_out(bridge)
-journey.journey_list

@@ -14,9 +14,9 @@ class Oystercard
   end
 
 
-  def touch_in(station)
+  def touch_in(journey)
     touch_in_card_checks
-    @entry_station = station
+    @entry_station = journey.entry_station
   end
 
   def touch_out(station)
