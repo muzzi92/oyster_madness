@@ -1,15 +1,15 @@
 require 'journey'
+require 'oystercard'
 
 describe Journey do
+  card = Oystercard.new
   let(:station) { double :station, name: :Bank }
   let(:station2) { double :station, name: :London_Bridge }
 
-
-
   describe '#in_journey' do
     it 'responds as true when touch in is true' do
-      subject.touch_in(station)
-      entry_station = station.name
+      card.top_up(20)
+      card.touch_in(station)
       expect(subject.in_journey?).to eq true
     end
     it 'responds as false when touch out' do
@@ -19,13 +19,13 @@ describe Journey do
 
   describe '#touch_in' do
     it 'saves the station where touched in' do
-      expect(subject.touch_in(station)).to eq :Bank
+      expect(card.touch_in(station)).to eq station
     end
   end
 
   describe '#touch_out' do
     it 'saves the station where touched out' do
-      expect(subject.touch_out(station2)).to eq :London_Bridge
+      expect(card.touch_out(station2)).to eq station2
     end
   end
 
